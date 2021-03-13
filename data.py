@@ -17,8 +17,7 @@ We are now going to take the list of all the provinces for each countries
 
 provinces_of_countries = {}
 for country in countries:
-    
-    
+
     temp = df[df['country']== country]
     
     prov_list = list(set(temp['province'].dropna()))
@@ -72,17 +71,23 @@ def world_plot(country):
     temp = df[df['country']== country ]
     x_price = list(temp['price'])
     y_points = list(temp['points'])
-    m,b = np.polyfit(np.log(x_price),y_points,1)
-    
+    m, b = np.polyfit(np.log(x_price), y_points, 1)
     
     x_temp = np.array(x_price)
-    plt.scatter(x_price,y_points)
-    plt.plot(x_temp,m*np.log(x_temp)+b)
+    size = [5] * len(x_price)
+    plt.scatter(x_price, y_points, size, 'k')
+
+    x_log_line = np.arange(min(x_price)-0.5, max(x_price)+0.5, 0.5)
+    log_line = m * np.log(x_log_line) + b
+    plt.plot(log_line, 'r')
+
+    # plt.plot(x_temp,m*np.log(x_temp)+b)
     plt.xlabel("Price")
     plt.ylabel("Points")
+    plt.xlim(left=min(x_price)-0.015*(min(x_price)), right=max(x_price)+0.015*(max(x_price)))
     plt.title(f"Price and Points of wine in {country}")
     plt.show()
     
-world_plot("France")
+world_plot("Spain")
 
 
